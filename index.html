@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0c1a33" />
+    <title>City Taxi Simulator</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%2712%27 width=%2728%27 height=%2712%27 rx=%274%27 fill=%27%23f5c400%27/%3E%3Crect x=%2711%27 y=%274%27 width=%2710%27 height=%276%27 rx=%272%27 fill=%27%23222%27/%3E%3Ccircle cx=%279%27 cy=%2726%27 r=%273%27 fill=%27%23222%27/%3E%3Ccircle cx=%2723%27 cy=%2726%27 r=%273%27 fill=%27%23222%27/%3E%3C/svg%3E" />
+    <script src="https://game-cdn.poki.com/scripts/v2/poki-sdk.js"></script>
+    <script type="module" crossorigin src="./assets/index-DBVl9b9O.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-6YsbPUiy.css">
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+
+    <div id="loading">
+      <div class="logo" id="logo">
+        <svg class="skyline" viewBox="0 0 320 84" aria-hidden="true">
+          <path d="M0 84V76h320v8z" />
+          <path d="M14 76V52h10v24zM132 76V58h14v18zM208 76V48h12v28zM282 76V56h11v20zM300 76V44h9v32z" opacity=".55" />
+          <path d="M28 76V31l2-9 2 9v45zM27 40h6v2h-6zM128 76V31l2-9 2 9v45zM127 40h6v2h-6z" />
+          <path d="M40 76V63h80v13z" />
+          <path d="M50 64a30 23 0 0 1 60 0zM42 66a11 8 0 0 1 22 0zM96 66a11 8 0 0 1 22 0z" />
+          <path d="M79 41h2v-7h-2z" />
+          <path d="M164 76v-8h40v8zM168 69a16 13 0 0 1 32 0zM157 76V45l1.5-7 1.5 7v31z" />
+          <path d="M244 76V38h20v38zM241 40h26v-4h-26zM244 36l10-24 10 24zM253 13h2V6h-2z" />
+          <path d="M248 46h3v6h-3zM257 46h3v6h-3zM248 58h3v6h-3zM257 58h3v6h-3z" fill="#0c1a33" />
+        </svg>
+        <div class="logo-city">CITY</div>
+        <div class="roof-sign" role="img" aria-label="TAXI">
+          <svg viewBox="8 14 282 110" aria-hidden="true">
+            <defs>
+              <linearGradient id="rs-face" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff3b0" /><stop offset=".2" stop-color="#ffdb4d" />
+                <stop offset=".6" stop-color="#ffc21a" /><stop offset="1" stop-color="#e89f00" />
+              </linearGradient>
+              <linearGradient id="rs-lid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f5c726" /><stop offset=".7" stop-color="#ffe680" /><stop offset="1" stop-color="#fff8d6" />
+              </linearGradient>
+              <linearGradient id="rs-side" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#eaa800" /><stop offset="1" stop-color="#a66a00" />
+              </linearGradient>
+              <linearGradient id="rs-spec" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity=".8" /><stop offset="1" stop-color="#fff" stop-opacity="0" />
+              </linearGradient>
+              <radialGradient id="rs-inner" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#fffbe6" stop-opacity=".75" /><stop offset="1" stop-color="#fff6c0" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="rs-ink" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2c3543" /><stop offset="1" stop-color="#090c12" />
+              </linearGradient>
+              <linearGradient id="rs-base" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f6f8fb" /><stop offset=".16" stop-color="#9aa4b2" /><stop offset=".26" stop-color="#2a3039" />
+                <stop offset=".62" stop-color="#14181e" /><stop offset="1" stop-color="#050608" />
+              </linearGradient>
+              <radialGradient id="rs-floor" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#000" stop-opacity=".55" /><stop offset="1" stop-color="#000" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <ellipse cx="150" cy="117" rx="138" ry="7.5" fill="url(#rs-floor)" />
+            <!-- Mounting feet -->
+            <path d="M52 109h28l5-5v7l-5 5H52z M206 109h28l5-5v7l-5 5h-28z" fill="#0b0d11" />
+            <path d="M52 109h28v7H52z M206 109h28v7h-28z" fill="#1d2129" />
+            <!-- Base: black body, chrome trim -->
+            <path d="M18 98h248l12-12H30z" fill="#2a3039" />
+            <path d="M266 98l12-12v12l-12 12z" fill="#0a0c10" />
+            <rect x="18" y="98" width="248" height="12" rx="2" fill="url(#rs-base)" />
+            <path d="M20 98.7h244" stroke="#fff" stroke-opacity=".85" stroke-width="1" />
+            <path d="M266.5 98.4l11-11" stroke="#c9d0da" stroke-opacity=".6" stroke-width="1" />
+            <!-- Sign body: right end, lid, acrylic front -->
+            <path d="M244 34l12-12 18 64-12 12z" fill="url(#rs-side)" stroke="#9a6200" stroke-width="1" stroke-linejoin="round" />
+            <path d="M44 34h196q4 0 6.5-2.5l7-7q2.5-2.5-1.5-2.5H56q-4 0-6.5 2.5l-7 7Q40 34 44 34z" fill="url(#rs-lid)" stroke="#c98d00" stroke-width="1" stroke-linejoin="round" />
+            <path d="M45 34h194q5 0 6.4 4.8L261 93q1 5-4 5H27q-5 0-3.6-5L38.6 38.8Q40 34 45 34z" fill="url(#rs-face)" stroke="#a86e00" stroke-width="1.6" />
+            <ellipse class="rs-glow" cx="142" cy="68" rx="104" ry="27" fill="url(#rs-inner)" />
+            <path d="M46 37h192q3 0 4 3l6 19Q142 47 36 59l6-19q1-3 4-3z" fill="url(#rs-spec)" />
+            <path d="M25.6 94.6L40.9 39.6Q41.9 36.8 45.5 36.8h193" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.3" stroke-linecap="round" />
+            <path d="M27 95.4h230" stroke="#8a5600" stroke-opacity=".45" stroke-width="1.4" stroke-linecap="round" />
+            <path d="M44.5 34.1h195" stroke="#fff" stroke-opacity=".95" stroke-width="1.2" stroke-linecap="round" />
+            <path d="M245 34.6l11.4-11.4" stroke="#fff" stroke-opacity=".6" stroke-width="1" stroke-linecap="round" />
+            <!-- Inset lettering: light catches the lower lip, shade on the upper -->
+            <g class="rs-text" text-anchor="middle">
+              <text x="142" y="84.4" textLength="150" lengthAdjust="spacingAndGlyphs" fill="#fff" fill-opacity=".65">TAXI</text>
+              <text x="142" y="82" textLength="150" lengthAdjust="spacingAndGlyphs" fill="#7a4a00" fill-opacity=".5">TAXI</text>
+              <text x="142" y="83" textLength="150" lengthAdjust="spacingAndGlyphs" fill="url(#rs-ink)">TAXI</text>
+            </g>
+          </svg>
+        </div>
+        <div class="logo-tag">SIMULATOR</div>
+      </div>
+      <div class="road" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="road-lane"></div>
+        <div class="road-fill" id="load-fill"><span class="road-cab" data-icon="cab"></span></div>
+      </div>
+      <div id="load-text"></div>
+    </div>
+
+    <div id="hud" hidden>
+      <div id="top-left">
+        <div class="tl-row bank">
+          <div id="level" class="lvl" aria-label="Level">
+            <img class="art" src="./assets/shield-BXB9FeLb.webp" alt="" /><b id="level-num" class="num">1</b>
+          </div>
+          <div id="wallet" class="pill money-chip">
+            <img class="coin art" src="./assets/coin-BrhTpurd.webp" alt="" /><span id="money" class="num">₺0</span>
+            <i class="xp"><i id="xp-fill"></i></i>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div id="clock-chip" class="pill small-chip"><span data-icon="clock"></span><span id="clock"></span></div>
+          <div id="income" class="pill small-chip income" hidden><span class="live"></span><span data-icon="ad"></span><span id="income-text"></span></div>
+        </div>
+        <div class="tl-row">
+          <div id="radio" class="pill radio-chip off" hidden>
+            <button id="radio-toggle" class="r-btn pow" type="button" data-tl="radioToggle" aria-pressed="false"><span data-icon="radio"></span></button>
+            <span class="r-label">
+              <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span id="radio-name" class="r-name"></span>
+            </span>
+            <button id="radio-prev" class="r-btn" type="button" data-tl="radioPrev"><span data-icon="prev"></span></button>
+            <button id="radio-next" class="r-btn" type="button" data-tl="radioNext"><span data-icon="next"></span></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="center-top">
+        <div id="objective" class="mission" hidden>
+          <div class="m-icon" id="obj-icon"><img id="obj-face" class="m-face" alt="" hidden /><img id="obj-stage" class="m-stage art" alt="" hidden /></div>
+          <div class="m-body">
+            <div id="obj-kicker" class="m-kicker"></div>
+            <div id="obj-title" class="m-title"></div>
+            <div id="obj-pass" class="m-pass" hidden>
+              <span id="obj-pass-kind" class="m-pk"></span><span id="obj-pass-note" class="m-pn"></span>
+            </div>
+          </div>
+          <div class="m-meta">
+            <span id="obj-dist" class="m-pill" hidden><span data-icon="pin"></span><span></span></span>
+            <span id="obj-timer" class="m-pill timer" hidden><span data-icon="timer"></span><span></span></span>
+            <span id="obj-sub" class="m-pill status" hidden></span>
+          </div>
+        </div>
+        <div id="sig-ahead" class="sig-ahead" role="img" aria-hidden="true" data-light="red">
+          <div class="sa-head">
+            <i class="sa-lamp sa-r"></i><i class="sa-lamp sa-a"></i><i class="sa-lamp sa-g"></i>
+          </div>
+          <div class="sa-info"><b id="sig-sec" class="sa-sec"></b><small id="sig-dist" class="sa-dist"></small></div>
+        </div>
+        <div id="toast" aria-live="polite"></div>
+      </div>
+
+      <div id="top-right">
+        <div id="side-buttons">
+          <button id="btn-camera" class="tile hud-btn" type="button" aria-label="Camera"><span data-icon="camera"></span></button>
+          <button id="btn-garage" class="tile hud-btn" type="button" aria-label="Garage"><span data-icon="garage"></span></button>
+          <button id="btn-tasks" class="tile hud-btn" type="button" data-tl="dailyTasks" aria-expanded="false" aria-controls="tasks" hidden>
+            <span data-icon="tasks"></span><i id="tasks-badge" class="badge" hidden></i>
+          </button>
+          <button id="btn-pause" class="tile hud-btn" type="button" aria-label="Pause"><span data-icon="pause"></span></button>
+        </div>
+        <div id="tasks" class="tasks-panel" hidden>
+          <div class="tp-head"><img class="tp-art art" src="./assets/clipboard-Dvi8JYJa.webp" alt="" /><b data-t="dailyTasks"></b><span id="tasks-count" class="tp-count"></span></div>
+          <ol id="tasks-list" class="tp-list"></ol>
+        </div>
+        <div class="map-frame"><canvas id="minimap" width="180" height="180"></canvas></div>
+        <button id="btn-boost" type="button" hidden>
+          <img class="bb-icon art" src="./assets/clapper-D-q5WtOP.webp" alt="" /><span id="boost-text"></span>
+        </button>
+      </div>
+
+      <div id="dash">
+        <div id="taximeter" class="meter" hidden>
+          <small data-t="meter"></small>
+          <b id="meter-text"></b>
+        </div>
+        <div id="speedo"><canvas id="gauge"></canvas></div>
+      </div>
+      <div id="help"></div>
+
+      <div id="touch" data-steer="wheel">
+        <div id="steer-zone">
+          <div class="signals">
+            <button type="button" class="sig" data-key="KeyQ" data-tl="signalLeft"><span data-icon="sigLeft"></span></button>
+            <button type="button" class="sig hz" data-key="KeyZ" data-tl="hazard"><span data-icon="hazard"></span></button>
+            <button type="button" class="sig" data-key="KeyE" data-tl="signalRight"><span data-icon="sigRight"></span></button>
+          </div>
+          <div id="wheel" class="wheel" role="img" data-tl="wheel"><img class="art" src="./assets/wheel-hQXVqGru.webp" alt="" /></div>
+          <div class="steer-btns">
+            <button type="button" class="st" data-steer-btn="left" data-tl="steerLeft"><span data-icon="left"></span></button>
+            <button type="button" class="st" data-steer-btn="right" data-tl="steerRight"><span data-icon="right"></span></button>
+          </div>
+        </div>
+        <div class="drive-right">
+          <div class="aux">
+            <button type="button" class="aux-btn horn" data-key="KeyH" data-tl="horn"><img class="art" src="./assets/horn-B9f_ys5s.webp" alt="" /></button>
+            <button type="button" class="aux-btn hb" data-hold="handbrake" data-tl="handbrake"><span data-icon="handbrake"></span></button>
+          </div>
+          <div id="pedals" class="pedals">
+            <button type="button" data-pedal="brake" class="pedal brake" data-tl="brake"><small data-t="brake"></small></button>
+            <button type="button" data-pedal="throttle" class="pedal gas" data-tl="gas"><small data-t="gas"></small></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="title" class="screen" hidden>
+      <div class="title-inner">
+        <div id="title-logo"></div>
+        <button id="btn-play" class="cta big" type="button"><span data-icon="play"></span><span data-t="play"></span></button>
+        <div class="title-row">
+          <button id="title-settings" class="ghost" type="button"><span data-icon="settings"></span><span data-t="settings"></span></button>
+          <button id="title-howto" class="ghost" type="button"><span data-icon="help"></span><span data-t="howTo"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="pay-card" class="overlay" hidden>
+      <div class="card receipt">
+        <h2 id="pay-title" class="tab"></h2>
+        <div id="pay-stars" class="stars"></div>
+        <div class="slip">
+          <div class="row"><span id="pay-fare-l"></span><b id="pay-fare"></b></div>
+          <div class="row"><span id="pay-tip-l"></span><b id="pay-tip"></b></div>
+          <div class="row total"><span id="pay-total-l"></span><b><img class="art" src="./assets/coin-BrhTpurd.webp" alt="" /><span id="pay-total"></span></b></div>
+        </div>
+        <div id="pay-level" class="level-up" hidden><img class="art" src="./assets/trophy-CB4EIyQl.webp" alt="" /><span id="pay-level-text"></span></div>
+        <button id="pay-next" class="cta" type="button"></button>
+      </div>
+    </div>
+
+    <div id="garage" class="overlay" hidden>
+      <div class="card wide">
+        <h2 id="garage-title" class="tab"></h2>
+        <div id="garage-money" class="garage-money"></div>
+        <div id="garage-list"></div>
+        <button id="garage-close" class="cta" type="button"></button>
+      </div>
+    </div>
+
+    <div id="pause" class="overlay" hidden>
+      <div class="card menu">
+        <h2 id="pause-title" class="tab"></h2>
+        <button id="pause-resume" class="cta" type="button"><span data-icon="play"></span><span data-t="resume"></span></button>
+        <button id="pause-settings" class="ghost" type="button"><span data-icon="settings"></span><span data-t="settings"></span></button>
+        <button id="pause-howto" class="ghost" type="button"><span data-icon="help"></span><span data-t="howTo"></span></button>
+        <div class="menu-row">
+          <button id="btn-sound" class="tile hud-btn" type="button" data-tl="sound"><span data-icon="soundOn"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings" class="overlay top" hidden>
+      <div class="card panel">
+        <h2 class="tab" data-t="settings"></h2>
+        <div class="panel-body">
+          <div class="set-row">
+            <span data-t="sound"></span>
+            <button id="set-sound" class="switch" type="button" role="switch" aria-checked="true"><i></i></button>
+          </div>
+          <label class="set-row">
+            <span data-t="music"></span>
+            <span class="range-wrap"><input id="set-music" type="range" min="0" max="100" step="5" /><output id="set-music-v"></output></span>
+          </label>
+          <div class="set-row">
+            <span class="set-label"><span data-t="graphics"></span><small id="set-note" class="set-note" hidden></small></span>
+            <span class="seg" role="radiogroup">
+              <button id="set-q-low" type="button" role="radio" data-t="low"></button>
+              <button id="set-q-high" type="button" role="radio" data-t="high"></button>
+            </span>
+          </div>
+          <label class="set-row">
+            <span data-t="camSens"></span>
+            <span class="range-wrap"><input id="set-cam" type="range" min="50" max="200" step="10" /><output id="set-cam-v"></output></span>
+          </label>
+          <div class="set-row touch-only">
+            <span data-t="steering"></span>
+            <span class="seg" role="radiogroup">
+              <button id="set-st-wheel" type="button" role="radio" data-t="steerWheel"></button>
+              <button id="set-st-buttons" type="button" role="radio" data-t="steerButtons"></button>
+              <button id="set-st-tilt" type="button" role="radio" data-t="steerTilt"></button>
+            </span>
+          </div>
+          <label class="set-row touch-only">
+            <span data-t="steerSens"></span>
+            <span class="range-wrap"><input id="set-steer" type="range" min="50" max="200" step="10" /><output id="set-steer-v"></output></span>
+          </label>
+        </div>
+        <button id="settings-back" class="cta" type="button"><span data-icon="back"></span><span data-t="back"></span></button>
+      </div>
+    </div>
+
+    <div id="howto" class="overlay top" hidden>
+      <div class="card panel">
+        <h2 class="tab" data-t="howTo"></h2>
+        <div class="panel-body">
+          <p class="goal" data-t="hGoal"></p>
+          <div id="howto-keys" class="keys"></div>
+          <p id="howto-touch" class="goal touch-only" data-t="hTouch"></p>
+        </div>
+        <button id="howto-back" class="cta" type="button"><span data-icon="back"></span><span data-t="back"></span></button>
+      </div>
+    </div>
+
+    <div id="rotate" role="alert" hidden>
+      <div class="rot-device" aria-hidden="true"><div class="rot-screen"><span class="rot-cab" data-icon="cab"></span></div></div>
+      <h2 data-t="rotateTitle"></h2>
+      <p data-t="rotateSub"></p>
+    </div>
+
+    <div id="fatal" hidden></div>
+  </body>
+</html>
